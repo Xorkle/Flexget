@@ -23,6 +23,7 @@ from flexget.event import event
 from flexget.utils.cached_input import cached
 from flexget.utils.tools import decode_html
 from flexget.utils.pathscrub import pathscrub
+from flexget.utils.template import render_from_entry, render_from_task, RenderError
 
 log = logging.getLogger('rss')
 feedparser.registerDateHandler(lambda date_string: dateutil.parser.parse(date_string).timetuple())
@@ -227,6 +228,7 @@ class InputRSS(object):
     def on_task_input(self, task, config):
         config = self.build_config(config)
 
+        config['url'] = render_from_task(config['url'], task)
         log.debug('Requesting task `%s` url `%s`', task.name, config['url'])
 
         # Used to identify which etag/modified to use
@@ -249,7 +251,6 @@ class InputRSS(object):
                 else:
                     headers['If-Modified-Since'] = modified
                     log.debug('Sending last-modified %s for task %s', headers['If-Modified-Since'], task.name)
-
         # Get the feed content
         if config['url'].startswith(('http', 'https', 'ftp', 'file')):
             # Get feed using requests library
