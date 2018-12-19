@@ -5,6 +5,7 @@ import logging
 
 from flexget import plugin
 from flexget.event import event
+from flexget.utils.template import render_from_entry, render_from_task, RenderError
 
 log = logging.getLogger('nzbget')
 
@@ -46,7 +47,7 @@ class OutputNzbget(object):
 
             # allow overriding the category
             if 'category' in entry:
-                params['category'] = entry['category']
+                params['category'] = render_from_task(entry['category'], task)
 
             try:
                 server.appendurl(entry['title'] + '.nzb',
