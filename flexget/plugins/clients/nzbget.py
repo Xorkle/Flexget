@@ -38,6 +38,7 @@ class OutputNzbget(object):
 
         params = dict(config)
 
+        print(params)
         server = ServerProxy(params["url"])
 
         for entry in task.accepted:
