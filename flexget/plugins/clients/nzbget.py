@@ -38,7 +38,7 @@ class OutputNzbget(object):
 
         params = dict(config)
 
-        print(params)
+        log.info(params)
         server = ServerProxy(params["url"])
 
         for entry in task.accepted:
@@ -48,7 +48,7 @@ class OutputNzbget(object):
 
             # allow overriding the category
             if 'category' in entry:
-                params['category'] = render_from_task(entry['category'], task)
+                params['category'] = render_from_entry(entry['category'], task)
 
             try:
                 server.appendurl(entry['title'] + '.nzb',
