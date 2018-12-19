@@ -38,7 +38,6 @@ class OutputNzbget(object):
 
         params = dict(config)
 
-        log.info(params)
         server = ServerProxy(params["url"])
 
         for entry in task.accepted:
@@ -46,8 +45,10 @@ class OutputNzbget(object):
                 log.info('Would add into nzbget: %s', entry['title'])
                 continue
 
+            log.info(entry)
             # allow overriding the category
             if 'category' in entry:
+                log.info('meme')
                 params['category'] = render_from_entry(entry['category'], task)
 
             try:
